@@ -11,24 +11,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+
 @WebServlet("/add")
 public class AddServlet extends HttpServlet{
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
-		int i = Integer.parseInt(req.getParameter("num1"));
-		int j = Integer.parseInt(req.getParameter("num2"));
+//		int i = Integer.parseInt(req.getParameter("num1"));
+//		int j = Integer.parseInt(req.getParameter("num2"));
 		
-		int k = i + j;
+		int k =5+5;
+		boolean r = true;
 		
 		HttpSession session = req.getSession();
-		session.setAttribute("k", k);
-		
-		res.sendRedirect("sq");
+//		session.setAttribute("k", k);
+//		
+//		res.sendRedirect("sq");
 		
 //		req.setAttribute("k", k);
 //		RequestDispatcher rd = req.getRequestDispatcher("sq");
 //		rd.forward(req, res);
+		res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        JsonObject json = Json.createObjectBuilder().add("foo", r).build();
+
+       
+
+		PrintWriter out = res.getWriter();
+		out.println(json.toString());
 		
 	}
 

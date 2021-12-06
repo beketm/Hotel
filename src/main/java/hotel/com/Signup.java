@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 
 @WebServlet("/signup")
 public class Signup extends HttpServlet {
@@ -30,17 +33,17 @@ public class Signup extends HttpServlet {
 	    System.out.println(sb.toString());
 	    
 	    boolean result = add_g(sb.toString());
-	    
-        PrintWriter out = response.getWriter();
+	    System.out.println("This email is free: " + result);
+//	    boolean result = true;
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        if (result) {
-        	out.print("1");
-        }else {
-        	out.print("0");
-        }
-        
-        out.flush();
+        PrintWriter out = response.getWriter();
+
+
+        JsonObject json = Json.createObjectBuilder().add("result", result).build();
+        out.println(json.toString());
+//        out.flush();
 	    
 	}
 	
@@ -49,5 +52,6 @@ public class Signup extends HttpServlet {
 		LoginDao dao = new LoginDao();
 		return dao.add_guest(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6].replace("%40", "@"), arr[7]);
 	}
+	
 	
 }
