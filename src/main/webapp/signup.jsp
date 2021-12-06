@@ -35,6 +35,10 @@ function check_password(){
 
 $(document).ready(function() { 
 	console.log("HIIIII");
+	
+	$("#form").submit(function(e){
+	    return false;
+	});
     
     check_password();
     
@@ -45,28 +49,44 @@ $(document).ready(function() {
     		alert("Some fields are empty!");
     	}else if ($("#note").text()==""){
     		
-    		$.post("signup", $( "#form" ).serialize(),function(data){
-    			console.log(data);
+    		$.ajax({
+    	        url: "signup",
+    	        data: $( "#form" ).serialize(),
+    	        dataType: 'JSON',
+    	        type: 'POST',
+    	        cache: false,
+    	        timeout: 30000,
+    	        fail: function(){
+    	            alert("Failed to recieve a response");
+    	        },
+    	        success: function(data){ 
+        			console.log(data);
 
-    			if (data=="1"){
-    				alert("You succesfully signed up!");
-    				window.location.href = 'login.jsp';
-    			}else{
-    				alert("This email is already used!");
-    			}
-    		}, "text")
-    			.done(function() {
-    		    alert( "second success" );
-    		  })
-    		  .fail(function() {
-    		    alert( "error" );
-    		  })
-    		  .always(function() {
-    		    alert( "finished" );
-    		  });
+        			if (data.result){
+        				alert("You succesfully signed up!");
+        				window.location.href = 'login.jsp';
+        			}else{
+        				alert("This email is already used!");
+        				window.location.href = 'signup.jsp';
+        			}
+    	        }
+    	    });
+    		
+    		
 
     	}
-    })
+    });
+    
+    $(".test").click(function(){
+    	$.get( "add", function( data ) {
+    		console.log(data);
+    		if (!data.foo){
+    			  console.log("It is true");
+    		  }else{
+    			  console.log("It is false");
+    		  }
+    		},"json");
+    });
     
 });
 
@@ -88,7 +108,7 @@ $(document).ready(function() {
 <h1><i> Nguyen's Palace</i> Hotel!</h1>
 <img src="hotel.jpg" alt="Flowers in Chania">
 
-<form id="form">
+<form  id="form">
   <div class="container">
     <h1>Register</h1>
     <p>Please fill in this form to create an account.</p>
@@ -132,6 +152,7 @@ $(document).ready(function() {
   </div>
 </form>
 
+    <button type="submit" class="test">test</button>
 
 </body>
 </html>
