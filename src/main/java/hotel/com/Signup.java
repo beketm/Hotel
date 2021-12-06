@@ -3,6 +3,7 @@ package hotel.com;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import javax.servlet.ServletException;
@@ -48,6 +49,13 @@ public class Signup extends HttpServlet {
 	}
 	
 	public boolean add_g(String text) {
+	   try {
+		text = java.net.URLDecoder.decode(text, "UTF-8");
+	} catch (UnsupportedEncodingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
 		String[] arr = Arrays.stream(text.split("&")).map(element -> element.split("=")[1]).toArray(String[]::new);
 		LoginDao dao = new LoginDao();
 		return dao.add_guest(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6].replace("%40", "@"), arr[7]);

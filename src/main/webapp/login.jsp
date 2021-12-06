@@ -2,22 +2,54 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+$(document).ready(function() { 
+	console.log("HIIIII");
+	
+	$.ajax({
+	    url: "login",
+	    dataType: 'JSON',
+	    type: 'GET',
+	    fail: function(){
+	        alert("Failed to recieve a response");
+	},
+	    success: function(data){ 
+    		console.log(data);
+    		if (data.result){
+    			$("#links").append("<a href=\"profile.jsp\" >My Profile</a>");
+    			$("#links").append("<a href=\"logout\" >Log out</a>");
+    			
+
+    		}else{
+    			$("#links").append("<a href=\"login.jsp\" >Login</a>");
+    			$("#links").append("<a href=\"signup.jsp\" >Sign up</a>");
+
+    		}
+	    }
+    });
+    
+});  		
+ 
+    		
+</script>
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/Hotel/main.css" type="text/css">
 </head>
 <body>
-<a href="rooms.html">Booking</a>
-<a href="home.jsp" >Information</a> 
-<a href="rooms.html" >Staff</a>
-<a href="login.jsp" >Login</a> 
-<a href="signup.jsp" >Sign up</a> 
+<div id="links">
+	<a href="rooms.html">Booking</a>
+	<a href="home.jsp" >Information</a> 
+	<a href="rooms.html" >Staff</a>
+</div>
 
 
 
 <h1><i> Nguyen's Palace</i> Hotel!</h1>
-<img src="hotel.jpg" alt="Flowers in Chania">
+<img src="hotel.jpg" alt="Flowers in Chania" class="main">
 
 
 	<form action="login" method="post" class="center">

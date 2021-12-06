@@ -77,15 +77,25 @@ $(document).ready(function() {
     	}
     });
     
-    $(".test").click(function(){
-    	$.get( "add", function( data ) {
+	$.ajax({
+	    url: "login",
+	    dataType: 'JSON',
+	    type: 'GET',
+	    fail: function(){
+	        alert("Failed to recieve a response");
+	},
+	    success: function(data){ 
     		console.log(data);
-    		if (!data.foo){
-    			  console.log("It is true");
-    		  }else{
-    			  console.log("It is false");
-    		  }
-    		},"json");
+    		if (data.result){
+    			$("#links").append("<a href=\"profile.jsp\" >My Profile</a>");
+    			$("#links").append("<a href=\"logout\" >Log out</a>");
+
+    		}else{
+    			$("#links").append("<a href=\"login.jsp\" >Login</a>");
+    			$("#links").append("<a href=\"signup.jsp\" >Sign up</a>");
+
+    		}
+	    }
     });
     
 });
@@ -97,16 +107,16 @@ $(document).ready(function() {
 <link rel="stylesheet" href="/Hotel/main.css" type="text/css">
 </head>
 <body>
-<a href="rooms.html">Booking</a>
-<a href="home.jsp" >Information</a> 
-<a href="rooms.html" >Staff</a>
-<a href="login.jsp" >Login</a> 
-<a href="signup.jsp" >Sign up</a> 
+<div id="links">
+	<a href="booking.jsp">Booking</a>
+	<a href="home.jsp" >Information</a> 
+	<a href="rooms.html" >Staff</a>
+</div>
 
 
 
 <h1><i> Nguyen's Palace</i> Hotel!</h1>
-<img src="hotel.jpg" alt="Flowers in Chania">
+<img src="hotel.jpg" alt="Flowers in Chania" class="main">
 
 <form  id="form">
   <div class="container">
@@ -151,8 +161,6 @@ $(document).ready(function() {
     <p>Already have an account? <a href="login.jsp">Log in</a>.</p>
   </div>
 </form>
-
-    <button type="submit" class="test">test</button>
 
 </body>
 </html>

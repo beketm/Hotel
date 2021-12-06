@@ -3,19 +3,25 @@ body {
     background: linear-gradient(to left top, rgb(173, 216, 230), rgb(255, 255, 255)) fixed;
     display: block;
     margin-top: 0.75em;
-    font-size: 1.75em;
+    font-size: 1.55em;
     text-align: center;
     font-weight: thick;
     color: rgb(0, 0, 0);
+}
+
+img.portfolio {
+	float: left;
+	width: 25%;
+  	height: 25%;
 }
 
 a+a {
   margin-left: 35px;
 }
 
-img {
-	width:800px;
-	height:600px;
+img.main {
+	width:600px;
+	height:400px;
 }
 
 .desc {
@@ -29,13 +35,13 @@ img {
 
 /* Add padding to containers */
 .container {
-  margin-left: 6.75em;
-  margin-right: 6.75em;
+  margin-left: 4.75em;
+  margin-right: 4.75em;
   padding: 16px;
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text], input[type=password], select, option {
   width: 15.75em;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -81,7 +87,7 @@ a {
   text-align: center;
 }
 
-.note {
+#note {
 	color: #ff5b5b;
 }
 
@@ -89,3 +95,4 @@ label{
 	text-align: left;
     padding-right: 5px;
 }
+
