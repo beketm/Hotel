@@ -64,8 +64,10 @@ $(document).ready(function() {
 	<p><%if (session.getAttribute("email")!= null && session.getAttribute("email").toString().equals("wrong")){
 		out.println("Either username or password is wrong. Try again!");
 	}%></p>
-
-<h2>No account?<br>You can <a href="signup.jsp">Sign up</a> right now!!!</h2>
+  
+<div class="container signin">
+    <p>No account?<br>You can <a href="signup.jsp">Sign up</a> right now!</p>
+</div>
 
 </body>
 </html>
