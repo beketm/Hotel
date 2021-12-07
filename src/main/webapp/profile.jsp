@@ -27,6 +27,110 @@ $(document).ready(function() {
     		}
 	    }
     });
+
+
+	$.ajax({
+	    url: "book",
+	    data: {time: "future"},
+	    dataType: 'JSON',
+	    method: "GET",
+	    fail: function(){
+	        alert("Failed to recieve a response");
+	},
+	    success: function(data){ 
+    		console.log(data);
+    			$("#table2").empty();
+    			if (Object.keys(data).length !== 0){
+    			for (const [key, value] of Object.entries(data)) {
+    			    
+    			    var data_arr = value.split(", ");
+    			    var hotel_id = data_arr[0];
+    			    var room_number = data_arr[1];
+    			    var city = null;
+    			    var floor = data_arr[3];
+    			    var checkout = data_arr[10];
+    			    var checkin = data_arr[11];
+    			    var image = null;
+    			    if (hotel_id=="1"){
+    			    	city = "Nursultan";
+    			    	image = "room_nur.jpg"
+    			    }else{
+    			    	city = "Almaty";
+    			    	image = "room_alm.jpg"
+    			    }
+    			    console.log(key, " ", city);
+    			    
+    			    $("#table2").append("<tr>"
+	    			    	+"<td class=\"roomimg\"><img src=\""+image+"\" alt=\"\" height=200 width=300></td>"
+	    			    	+"<td class=\"roomdesc\">City: "+city+"<br>"
+	    			    	+"Room number: "+room_number+"<br>"
+	    			    	+"Floor: "+floor+"<br>"
+	    			    	+"Type: "+data_arr[6]+"<br>"
+	    			    	+"Area: "+data_arr[7]+" &#13217"+"<br>"
+	    			    	+"</td>"
+	    			    	+"<td>Check-in: "+checkin+"<br>"
+	    			    	+"Check-out: "+checkout+"</td>"
+	    			    +"</tr>");
+    			    
+    			} 	
+    			}else{
+    				$("#table2").after("<p>No bookings</p>")
+    			}
+    		
+	    }
+    });
+	
+	$.ajax({
+	    url: "book",
+	    data: {time: "history"},
+	    dataType: 'JSON',
+	    method: "GET",
+	    fail: function(){
+	        alert("Failed to recieve a response");
+	},
+	    success: function(data){ 
+    		console.log(data);
+    			$("#table1").empty();
+    			console.log(data);
+    			if (Object.keys(data).length !== 0){
+    			for (const [key, value] of Object.entries(data)) {
+    			    
+    			    var data_arr = value.split(", ");
+    			    var hotel_id = data_arr[0];
+    			    var room_number = data_arr[1];
+    			    var city = null;
+    			    var floor = data_arr[3];
+    			    var checkout = data_arr[10];
+    			    var checkin = data_arr[11];
+    			    var image = null;
+    			    if (hotel_id=="1"){
+    			    	city = "Nursultan";
+    			    	image = "room_nur.jpg"
+    			    }else{
+    			    	city = "Almaty";
+    			    	image = "room_alm.jpg"
+    			    }
+    			    console.log(key, " ", city);
+    			    
+    			    $("#table1").append("<tr>"
+	    			    	+"<td class=\"roomimg\"><img src=\""+image+"\" alt=\"\" height=200 width=300></td>"
+	    			    	+"<td class=\"roomdesc\">City: "+city+"<br>"
+	    			    	+"Room number: "+room_number+"<br>"
+	    			    	+"Floor: "+floor+"<br>"
+	    			    	+"Type: "+data_arr[6]+"<br>"
+	    			    	+"Area: "+data_arr[7]+" &#13217"+"<br>"
+	    			    	+"</td>"
+	    			    	+"<td>Check-in: "+checkin+"<br>"
+	    			    	+"Check-out: "+checkout+"</td>"
+	    			    +"</tr>");
+    			    
+    			} 	
+    			}else{
+    				$("#table1").after("<p>No bookings</p>")
+    			}
+    		
+	    }
+    });
     
 });  		
  
@@ -59,6 +163,25 @@ $(document).ready(function() {
 	<p style="text-align: left; margin-left: 40%;">Address: <%= data.get(3)%></p>
 	<p style="text-align: left; margin-left: 40%;">Phone Number: <%= data.get(4)%></p>
 </div>
+<br><br><br><br><br><br><br><br>
+
+<h3>My Booking History</h3>
+<table id="table1">
+	<tr>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    </tr>
+</table>
+
+<h3>My Future Bookings</h3>
+<table id="table2">
+	<tr>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    </tr>
+</table>
 
 
 

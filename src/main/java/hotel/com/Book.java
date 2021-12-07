@@ -17,10 +17,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 @WebServlet("/book")
 public class Book extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		StringBuilder sb = new StringBuilder();
+		LoginDao dao = new LoginDao();
+	    StringBuilder sb = new StringBuilder();
 	    BufferedReader reader = request.getReader();
 	    try {
 	        String line;
@@ -30,17 +32,27 @@ public class Book extends HttpServlet {
 	    } finally {
 	        reader.close();
 	    }
-	    System.out.println(sb.toString());
+	    String time = request.getParameter("time");
+
+    	List<List<String>> result = dao.get_booking_future(request.getSession().getAttribute("email").toString());
+	    if (time.equals("history")) {
+	    	result = dao.get_booking_history(request.getSession().getAttribute("email").toString());
+	    }
 	    
 	    response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         JsonObjectBuilder job = Json.createObjectBuilder();
-        job.add("res", 555);
+        int i = 0;
+        for(List<String> list: result) {
+        	job.add(i+"", list.toString().replace("]", "").replace("[", ""));
+        	i++;
+        }
 
         JsonObject json = job.build();
         out.println(json.toString());
 	}
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException{
 		StringBuilder sb = new StringBuilder();

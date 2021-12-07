@@ -27,13 +27,22 @@ public class MakeBooking extends HttpServlet {
 	    }
 	    System.out.println(sb.toString());
 	    
+	    boolean result = add_booking(sb.toString());
 	    response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         JsonObjectBuilder job = Json.createObjectBuilder();
-        job.add("res", 555);
+        job.add("result", result);
 
         JsonObject json = job.build();
         out.println(json.toString());
+	}
+	
+	public boolean add_booking(String input) {
+		String[] text = input.split("&");
+		
+		LoginDao dao = new LoginDao();
+		return dao.add_booking(text[0], text[1], text[2], text[3], text[4], text[5]);
+		
 	}
 }

@@ -148,7 +148,7 @@ $(document).ready(function() {
 										
 	    			        			$.ajax({
 	    			        				url: "makebooking",
-	    			        				data:  (email + "&" + hotel_id + "&" + room_number + "&" + checkin + "&" + checkout),
+	    			        				data:  (email + "&" + hotel_id + "&" + room_number + "&" + checkin + "&" + checkout + "&" + number_people),
 	    			        				dataType: "JSON",
 	    			        				type: "POST",
 	    			        				fail: function(){
@@ -156,6 +156,12 @@ $(document).ready(function() {
 	    		    			    	},
 	    		    			    		success: function(data){
 	    		    			    			console.log(data);
+	    		    			    			if (data.result){
+	    		    			    				$("button[hotel_id='"+hotel_id+"'][room_number='"+room_number+"']").parents("tr").remove()
+	    		    			    				alert("You succesfully booked!");
+	    		    			    			}else{
+	    		    			    				alert("You already booked this room for those dates!");
+	    		    			    			}
 	    		    			    		}
 	    			        			})
 										
