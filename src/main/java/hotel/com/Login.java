@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 public class Login extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-		boolean result = session.getAttribute("email") != null;
+		boolean result = session.getAttribute("email") != null && session.getAttribute("email") !="wrong";
 		JsonObject json = Json.createObjectBuilder().add("result", result).build();
         
 		res.setContentType("application/json");

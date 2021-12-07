@@ -20,21 +20,22 @@ function restrict_date(){
     $('#checkin').attr('min', maxDate);
     
     $('#checkin').focusout(function(){
+    	var dtToday = new Date();
 		if ($('#checkin').val()){
-			var dtToday = new Date($('#checkin').val());
-		    
-		    var month = dtToday.getMonth() + 1;
-		    var day = dtToday.getDate()+1;
-		    var year = dtToday.getFullYear();
-		    if(month < 10)
-		        month = '0' + month.toString();
-		    if(day < 10)
-		        day = '0' + day.toString();
-		    
-		    var maxDate = year + '-' + month + '-' + day;
-
-		    $('#checkout').attr('min', maxDate);
+			dtToday = new Date($('#checkin').val());
 			}
+	    
+	    var month = dtToday.getMonth() + 1;
+	    var day = dtToday.getDate()+1;
+	    var year = dtToday.getFullYear();
+	    if(month < 10)
+	        month = '0' + month.toString();
+	    if(day < 10)
+	        day = '0' + day.toString();
+	    
+	    var maxDate = year + '-' + month + '-' + day;
+
+	    $('#checkout').attr('min', maxDate);
 		})
 }
 
@@ -42,6 +43,7 @@ function restrict_date(){
 $(document).ready(function() { 
 	console.log("HIIIII");
 	restrict_date();
+
 	
 	
 	$("#form").submit(function(e){
@@ -78,12 +80,12 @@ $(document).ready(function() {
     	}else {
     		
     		var data = $("#form").serialize()+"&checkin="+$("#checkin").val().toString()+"&checkout="+$("#checkout").val().toString();
-
+			var past_data = null;
     		$.ajax({
     		    url: "book",
     		    data: data,
     		    dataType: 'JSON',
-    		    type: 'POST',
+    		    method: "POST",
     		    contentType: false,
     		    processData: false,
     		    fail: function(){
@@ -91,14 +93,92 @@ $(document).ready(function() {
     		},
     		    success: function(data){ 
     	    		console.log(data);
+    	    		if (past_data!=data){
+    	    			$("table").empty();
+    	    			for (const [key, value] of Object.entries(data)) {
+    	    			    
+    	    			    var data_arr = value.split(", ");
+    	    			    var hotel_id = data_arr[0];
+    	    			    var room_number = data_arr[1];
+    	    			    var city = null;
+    	    			    var floor = data_arr[3];
+    	    			    var image = null;
+    	    			    if (hotel_id=="1"){
+    	    			    	city = "Nursultan";
+    	    			    	image = "room_nur.jpg"
+    	    			    }else{
+    	    			    	city = "Almaty";
+    	    			    	image = "room_alm.jpg"
+    	    			    }
+    	    			    console.log(key, " ", city);
+    	    			    
+    	    			    $("table").append("<tr>"
+	    	    			    	+"<td class=\"roomimg\"><img src=\""+image+"\" alt=\"\" height=200 width=300></td>"
+	    	    			    	+"<td class=\"roomdesc\">City: "+city+"<br>"
+	    	    			    	+"Room number: "+room_number+"<br>"
+	    	    			    	+"Floor: "+floor+"<br>"
+	    	    			    	+"Type: "+data_arr[6]+"<br>"
+	    	    			    	+"Area: "+data_arr[7]+" &#13217"+"<br>"
+	    	    			    	+"</td>"
+	    	    			    	+"<td><button hotel_id=\""+hotel_id+"\" room_number=\""+room_number+"\" type=\"submit\" class=\"bookroom\">Book this room</button></td>"
+	    	    			    +"</tr>");
+    	    			    
+    	    			}
+	    			    $(".bookroom").click(function(){
+	    			    	var hotel_id = $(this).attr("hotel_id");
+	    			    	var room_number = $(this).attr("room_number");
+	    			    	var email = '${email}';
+	    			    	var checkin = $("#form #checkin").val();
+	    			    	var checkout = $("#form #checkout").val();
+	    			    	var number_people = $("#form #number_people").val();
+	    			    	
+	    			    	console.log($(this).attr("hotel_id"));
+	    			    	console.log($(this).attr("room_number"));
+	    			    	
+	    			    	$.ajax({
+	    			    	    url: "login",
+	    			    	    dataType: 'JSON',
+	    			    	    type: 'GET',
+	    			    	    fail: function(){
+	    			    	        alert("Failed to recieve a response");
+	    			    	},
+	    			    	    success: function(data){ 
+	    			        		console.log(data);
+	    			        		if (data.result){
+										
+	    			        			$.ajax({
+	    			        				url: "makebooking",
+	    			        				data:  (email + "&" + hotel_id + "&" + room_number + "&" + checkin + "&" + checkout),
+	    			        				dataType: "JSON",
+	    			        				type: "POST",
+	    			        				fail: function(){
+	    		    			    	        alert("Failed to recieve a response");
+	    		    			    	},
+	    		    			    		success: function(data){
+	    		    			    			console.log(data);
+	    		    			    		}
+	    			        			})
+										
+
+	    			        		}else{
+										alert("You need to login first! Redirecting you to login page");
+										window.location.href = 'login.jsp';
+	    			        		}
+	    			    	    }
+	    			        }); 
+
+	    			    });
+	    	    		
+    	    		}
     		    }
     	    });
     		
-    		
+    	past_data = $("#form").serialize()+"&checkin="+$("#checkin").val().toString()+"&checkout="+$("#checkout").val().toString();
 
     	}
     });
 	
+
 
 	
 
@@ -163,12 +243,19 @@ $(document).ready(function() {
 
     <button type="submit" class="searchbtn">Search</button>
   </div>
-<%if (session.getAttribute("email") == null){
-	out.println("  <div class=\"container signin\"><p>Already have an account? <a href=\"login.jsp\">Log in</a>.</p></div>");
-} %>
 
 
 </form>
+<table>
+	<tr>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+    </tr>
+</table>
+<%if (session.getAttribute("email") == null){
+	out.println("  <div class=\"container signin\"><p>Already have an account? <a href=\"login.jsp\">Log in</a>.</p></div>");
+} %>
 
 </body>
 </html>

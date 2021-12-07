@@ -19,6 +19,7 @@ a+a {
   margin-left: 35px;
 }
 
+
 img.main {
 	width:600px;
 	height:400px;
@@ -101,5 +102,17 @@ a {
 label{
 	text-align: left;
     padding-right: 5px;
+}
+
+table{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td.roomdesc {
+	width: 50%;
+}
+td.roomimg {
+	width: 30%;
 }
 

@@ -41,7 +41,7 @@ $(document).ready(function() {
 </head>
 <body>
 <div id="links">
-	<a href="rooms.html">Booking</a>
+	<a href="booking.jsp">Booking</a>
 	<a href="home.jsp" >Information</a> 
 	<a href="rooms.html" >Staff</a>
 </div>
