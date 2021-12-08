@@ -4,45 +4,33 @@
 <html>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-function restrict_date(){
-    var dtToday = new Date();
-    
-    var month = dtToday.getMonth() + 1;
-    var day = dtToday.getDate();
-    var year = dtToday.getFullYear();
-    if(month < 10)
-        month = '0' + month.toString();
-    if(day < 10)
-        day = '0' + day.toString();
-    
-    var maxDate = year + '-' + month + '-' + day;
-
-    $('#checkin').attr('min', maxDate);
-    
-    $('#checkin').focusout(function(){
-    	var dtToday = new Date();
-		if ($('#checkin').val()){
-			dtToday = new Date($('#checkin').val());
-			}
-	    
-	    var month = dtToday.getMonth() + 1;
-	    var day = dtToday.getDate()+1;
-	    var year = dtToday.getFullYear();
-	    if(month < 10)
-	        month = '0' + month.toString();
-	    if(day < 10)
-	        day = '0' + day.toString();
-	    
-	    var maxDate = year + '-' + month + '-' + day;
-
-	    $('#checkout').attr('min', maxDate);
-		})
+function calculate_price(checkin, checkout, room_type){
+    var price = 0;
+    checkin = new Date(checkin);
+    checkout = new Date(checkout);
+    while(checkout>checkin){
+       let d = checkin.getDay();
+       if (d == 0){
+           price = price + 300;
+       }
+       else if (d == 6){
+           price = price + 200;
+       }
+       else{
+           price = price + 100;
+       }
+       let a = checkin.getDate();
+       a = a + 1;
+       checkin.setDate(a);
+   }
+     if(room_type === "1"){
+         return price;
+       }
+     else{
+          return price*2;
+       }
 }
-
-
 $(document).ready(function() { 
-	console.log("HIIIII");
-	restrict_date();
 
 	
 	
@@ -50,7 +38,7 @@ $(document).ready(function() {
 	    return false;
 	});
     
-    
+
 	$.ajax({
 	    url: "login",
 	    dataType: 'JSON',
@@ -70,7 +58,10 @@ $(document).ready(function() {
 
     		}
 	    }
-    });
+    }
+	);
+	
+	
 	
     $(".searchbtn").click(function(){
     	if ($("*[required]").filter(function () {
@@ -79,10 +70,10 @@ $(document).ready(function() {
     		alert("Some fields are empty!");
     	}else {
     		
-    		var data = $("#form").serialize()+"&checkin="+$("#checkin").val().toString()+"&checkout="+$("#checkout").val().toString();
+    		var data = $("#form").serialize();
 			var past_data = null;
     		$.ajax({
-    		    url: "book",
+    		    url: "book1",
     		    data: data,
     		    dataType: 'JSON',
     		    method: "POST",
@@ -111,16 +102,23 @@ $(document).ready(function() {
     	    			    	image = "room_alm.jpg"
     	    			    }
     	    			    console.log(key, " ", city);
+
+    	    			    if (city.toLowerCase() != $("#city").val()){
+    	    			    	continue;
+    	    			    }
     	    			    
     	    			    $("table").append("<tr>"
 	    	    			    	+"<td class=\"roomimg\"><img src=\""+image+"\" alt=\"\" height=200 width=300></td>"
 	    	    			    	+"<td class=\"roomdesc\">City: "+city+"<br>"
+	    	    			    	+"Name: "+data_arr[14]+"<br>"
+	    	    			    	+"Last name: "+ data_arr[15] +"<br>"
 	    	    			    	+"Room number: "+room_number+"<br>"
 	    	    			    	+"Floor: "+floor+"<br>"
-	    	    			    	+"Type: "+data_arr[6]+"<br>"
-	    	    			    	+"Area: "+data_arr[7]+" &#13217"+"<br>"
+	    	    			    	+"Type: "+data_arr[23]+"<br>"
+	    	    			    	+"Area: "+data_arr[24]+" &#13217"+"<br>"
+	    	    			    	+"Price: "+calculate_price(data_arr[10],data_arr[11],data_arr[2])+" &#36 "+"<br>"
 	    	    			    	+"</td>"
-	    	    			    	+"<td><button hotel_id=\""+hotel_id+"\" room_number=\""+room_number+"\" type=\"submit\" class=\"bookroom\">Book this room</button></td>"
+	    	    			    	+"<td><button hotel_id=\""+hotel_id+"\" room_number=\""+room_number+"\" type=\"submit\" class=\"bookroom\">Delete this booking</button></td>"
 	    	    			    +"</tr>");
     	    			    
     	    			}
@@ -144,11 +142,11 @@ $(document).ready(function() {
 	    			    	},
 	    			    	    success: function(data){ 
 	    			        		console.log(data);
-	    			        		if (data.result){
+	    			        		if (true){
 										
 	    			        			$.ajax({
-	    			        				url: "makebooking",
-	    			        				data:  (email + "&" + hotel_id + "&" + room_number + "&" + checkin + "&" + checkout + "&" + number_people),
+	    			        				url: "delete",
+	    			        				data:  ("&"+hotel_id + "&" + room_number+ "&"),
 	    			        				dataType: "JSON",
 	    			        				type: "POST",
 	    			        				fail: function(){
@@ -156,11 +154,13 @@ $(document).ready(function() {
 	    		    			    	},
 	    		    			    		success: function(data){
 	    		    			    			console.log(data);
+	    		    			    			
 	    		    			    			if (data.result){
-	    		    			    				$("button[hotel_id='"+hotel_id+"'][room_number='"+room_number+"']").parents("tr").remove()
-	    		    			    				alert("You succesfully booked!");
+	    		    			    				
+	    		    			    			$("button[hotel_id='"+hotel_id+"'][room_number='"+room_number+"']").parents("tr").remove()
+	    		    			    			alert("You succesfully deleted booking!");
 	    		    			    			}else{
-	    		    			    				alert("You already booked this room for those dates!");
+	    		    			    				alert("You already canceled this booking!");
 	    		    			    			}
 	    		    			    		}
 	    			        			})
@@ -172,6 +172,7 @@ $(document).ready(function() {
 	    			        		}
 	    			    	    }
 	    			        }); 
+	    		
 
 	    			    });
 	    	    		
@@ -179,7 +180,7 @@ $(document).ready(function() {
     		    }
     	    });
     		
-    	past_data = $("#form").serialize()+"&checkin="+$("#checkin").val().toString()+"&checkout="+$("#checkout").val().toString();
+    	past_data = $("#form").serialize();
 
     	}
     });
@@ -201,7 +202,7 @@ $(document).ready(function() {
 <div id="links">
 	<a href="booking.jsp">Booking</a>
 	<a href="home.jsp" >Information</a> 
-	<a href="staff_home.jsp" >Staff</a>
+	<a href="rooms.html" >Staff</a>
 </div>
 
 
@@ -221,28 +222,8 @@ $(document).ready(function() {
 	  <option value="almaty">Almaty</option>
   </select>
     
-
-    <input placeholder="Select Check-in" class="checkin" type="text" onfocus="(this.type='date')" id="checkin" required>
-    
-
-    <input placeholder="Select Check-out" class="checkout" type="text" onfocus="(this.type='date')" id="checkout" required>
-    
-
-    <select id="room_type" name="room_type" required>
-    <option value="" disabled selected>Select Room Type</option>
-	  <option value="single">Single</option>
-	  <option value="double">Double</option>
-  	</select>
   	
 
-    <select id="number_people" name="number_people" required>
-	  <option value="" disabled selected>Select Number of People</option>
-	  <option value="1">1</option>
-	  <option value="2">2</option>
-	  <option value="3">3</option>
-	  <option value="4">4</option>
-	  <option value="5">5</option>
-  	</select>
     
     <p id="note"></p>
     <hr>
@@ -259,9 +240,7 @@ $(document).ready(function() {
     	<th></th>
     </tr>
 </table>
-<%if (session.getAttribute("email") == null){
-	out.println("  <div class=\"container signin\"><p>Already have an account? <a href=\"login.jsp\">Log in</a>.</p></div>");
-} %>
+
 
 </body>
 </html>

@@ -43,7 +43,7 @@ $(document).ready(function() {
     check_password();
     
     $(".registerbtn").click(function(){
-    	if ($("input").filter(function () {
+    	if ($("*[required]").filter(function () {
     	    return $.trim($(this).val()).length == 0
     	}).length != 0){
     		alert("Some fields are empty!");
@@ -91,8 +91,8 @@ $(document).ready(function() {
     			$("#links").append("<a href=\"logout\" >Log out</a>");
 
     		}else{
-    			$("#links").append("<a href=\"login.jsp\" >Login</a>");
-    			$("#links").append("<a href=\"signup.jsp\" >Sign up</a>");
+    			$("#links").append("<a href=\"staff_login.jsp\" >Login</a>");
+    			$("#links").append("<a href=\"staff_signup.jsp\" >Sign up</a>");
 
     		}
 	    }
@@ -120,7 +120,7 @@ $(document).ready(function() {
 
 <form  id="form">
   <div class="container">
-    <h1>Register</h1>
+    <h1>Registration for Hotel Staff</h1>
     <p>Please fill in this form to create an account.</p>
     <hr>
     
@@ -129,6 +129,21 @@ $(document).ready(function() {
     
     <label for="lname"><b>Last Name</b></label>
     <input type="text" placeholder="Enter Last Name" name="lname" id="lname" required><br>
+    
+    <label for="hotel_city"><b>Hotel City</b></label>
+	<select id="city" name="city"  required>
+    	<option value="" disabled selected>Enter Hotel City</option>
+	  	<option value="nursultan">Nursultan</option>
+	  	<option value="almaty">Almaty</option>
+	</select><br>
+    
+    <label for="jpostion"><b>Job Position</b></label>
+	<select id="jpostion" name="jpostion" required>
+    	<option value="" disabled selected>Enter Job Position</option>
+		<option value="desk_clerk">Desk Cleark</option>
+		<option value="cleaner">Cleaner</option>
+		<option value="manager">Manager</option>
+  	</select><br>
     
     <label for="passport_number"><b>National Passport Number</b></label>
     <input type="text" placeholder="Enter National Passport Number" name="passport_number" id="passport_number" required><br>
@@ -158,7 +173,7 @@ $(document).ready(function() {
   </div>
 
   <div class="container signin">
-    <p>Already have an account? <a href="login.jsp">Log in</a>.</p>
+    <p>Already have an account? <a href="staff_login.jsp">Log in</a>.</p>
   </div>
 </form>
 

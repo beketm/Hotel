@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
-function check_password(){
+function check_password() {
     $('#psw-repeat').focusout(function(){
         var pass = $('#psw').val();
         var pass2 = $('#psw-repeat').val();
@@ -15,34 +15,33 @@ function check_password(){
         }else{
         	$("#note").text("");
         }
-
-    });
+	});
     $('#email').focusout(function(){
         var email = $("#email").val()
         
         if (!email.match(
         	    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        		  )){
+        		  )) {
         	$("#note").text("Email is invalid!");
-        }else{
+        } else if (email.split('@')[1] != "np.kz") {
+       		$("#note").text("Email is invalid! Write your work email!");
+        }
+        else {
         	$("#note").text("");
         }
-       
     });
-	
-
 }
 
 $(document).ready(function() { 
 	console.log("HIIIII");
 	
-	$("#form").submit(function(e){
+ 	$("#form").submit(function(e){
 	    return false;
-	});
+	}); 
     
     check_password();
     
-    $(".registerbtn").click(function(){
+    $(".registerbtn2").click(function(){
     	if ($("input").filter(function () {
     	    return $.trim($(this).val()).length == 0
     	}).length != 0){
@@ -50,7 +49,7 @@ $(document).ready(function() {
     	}else if ($("#note").text()==""){
     		
     		$.ajax({
-    	        url: "signup",
+    	        url: "stuffsignup",
     	        data: $( "#form" ).serialize(),
     	        dataType: 'JSON',
     	        type: 'POST',
@@ -64,10 +63,10 @@ $(document).ready(function() {
 
         			if (data.result){
         				alert("You succesfully signed up!");
-        				window.location.href = 'login.jsp';
+        				window.location.href = 'stufflogin.jsp';
         			}else{
         				alert("This email is already used!");
-        				window.location.href = 'signup.jsp';
+        				window.location.href = 'stuffsignup.jsp';
         			}
     	        }
     	    });
@@ -78,7 +77,7 @@ $(document).ready(function() {
     });
     
 	$.ajax({
-	    url: "login",
+	    url: "stufflogin",
 	    dataType: 'JSON',
 	    type: 'GET',
 	    fail: function(){
@@ -87,12 +86,11 @@ $(document).ready(function() {
 	    success: function(data){ 
     		console.log(data);
     		if (data.result){
-    			$("#links").append("<a href=\"profile.jsp\" >My Profile</a>");
+    			$("#links").append("<a href=\"stuffprofile.jsp\" >My Profile</a>");
     			$("#links").append("<a href=\"logout\" >Log out</a>");
 
     		}else{
-    			$("#links").append("<a href=\"login.jsp\" >Login</a>");
-    			$("#links").append("<a href=\"signup.jsp\" >Sign up</a>");
+    			$("#links").append("<a href=\"stufflogin.jsp\" >Login</a>");
 
     		}
 	    }
@@ -103,19 +101,17 @@ $(document).ready(function() {
 </script>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Staff sign up</title>
 <link rel="stylesheet" href="/Hotel/main.css" type="text/css">
 </head>
 <body>
 <div id="links">
-	<a href="booking.jsp">Booking</a>
-	<a href="home.jsp" >Information</a> 
-	<a href="staff_home.jsp" >Staff</a>
+	<a href="home.jsp" >Homepage</a> 
 </div>
 
 
 
-<h1><i> Nguyen's Palace</i> Hotel!</h1>
+<h1><i> Nguyen's Palace</i><br> Where dreams come true!</h1>
 <img src="hotel.jpg" alt="Flowers in Chania" class="main">
 
 <form  id="form">
@@ -130,19 +126,22 @@ $(document).ready(function() {
     <label for="lname"><b>Last Name</b></label>
     <input type="text" placeholder="Enter Last Name" name="lname" id="lname" required><br>
     
-    <label for="passport_number"><b>National Passport Number</b></label>
-    <input type="text" placeholder="Enter National Passport Number" name="passport_number" id="passport_number" required><br>
+    <label for="position"><b>Position</b></label>
+    <select id="position" name="position" required>
+	<option value="" disabled selected>Select Your Position</option>
+	  <option value="manager">Manager</option>
+	  <option value="clerk">Clerk</option>
+	  <option value="cleaner">Cleaner</option>
+	</select><br>
     
-    <label for="address"><b>Address</b></label>
-    <input type="text" placeholder="Enter Address" name="address" id="address" required><br>
+    <label for="hotel"><b>Hotel</b></label>
+    <select id="hotel" name="hotel" required>
+	<option value="" disabled selected>Select City</option>
+	  <option value="nursultan">Nursultan</option>
+	  <option value="almaty">Almaty</option>
+	</select><br>
     
-    <label for="home_phone_number"><b>Home Phone number</b></label>
-    <input type="text" placeholder="Enter Home Phone number" name="home_phone_number" id="home_phone_number" required><br>
-    
-    <label for="mobile_phone_number"><b>Mobile Phone number</b></label>
-    <input type="text" placeholder="Enter Mobile Phone number" name="mobile_phone_number" id="mobile_phone_number" required><br>
-    
-    <label for="email"><b>Email</b></label>
+    <label for="email"><b>Work Email</b></label>
     <input type="text" placeholder="Enter Email" name="email" id="email" required><br>
 
     <label for="psw"><b>Password</b></label>
@@ -154,11 +153,11 @@ $(document).ready(function() {
     <p id="note"></p>
     <hr>
 
-    <button type="submit" class="registerbtn">Sign up</button>
+    <button type="submit" class="registerbtn2">Sign up</button>
   </div>
 
   <div class="container signin">
-    <p>Already have an account? <a href="login.jsp">Log in</a>.</p>
+    <p>Already have an account? <a href="stufflogin.jsp">Log in</a>.</p>
   </div>
 </form>
 

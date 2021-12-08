@@ -145,7 +145,7 @@ $(document).ready(function() {
 <div id="links">
 	<a href="booking.jsp">Booking</a>
 	<a href="home.jsp" >Information</a> 
-	<a href="rooms.html" >Staff</a>
+	<a href="staff_home.jsp" >Staff</a>
 </div>
 
 <%! LoginDao dao = new LoginDao();%>

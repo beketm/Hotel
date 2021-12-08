@@ -9,7 +9,7 @@ $(document).ready(function() {
 	console.log("HIIIII");
 	
 	$.ajax({
-	    url: "login",
+	    url: "stufflogin",
 	    dataType: 'JSON',
 	    type: 'GET',
 	    fail: function(){
@@ -18,13 +18,13 @@ $(document).ready(function() {
 	    success: function(data){ 
     		console.log(data);
     		if (data.result){
-    			$("#links").append("<a href=\"profile.jsp\" >My Profile</a>");
+    			$("#links").append("<a href=\"stuffprofile.jsp\" >My Profile</a>");
     			$("#links").append("<a href=\"logout\" >Log out</a>");
     			
 
     		}else{
-    			$("#links").append("<a href=\"login.jsp\" >Login</a>");
-    			$("#links").append("<a href=\"signup.jsp\" >Sign up</a>");
+//    			$("#links").append("<a href=\"stufflogin.jsp\" >Login</a>");
+    			$("#links").append("<a href=\"stuffsignup.jsp\" >Sign Up As a Staff</a>");
 
     		}
 	    }
@@ -36,23 +36,22 @@ $(document).ready(function() {
 </script>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Stuff Page</title>
 <link rel="stylesheet" href="/Hotel/main.css" type="text/css">
 </head>
 <body>
 <div id="links">
-	<a href="booking.jsp">Booking</a>
-	<a href="home.jsp" >Information</a> 
-	<a href="staff_home.jsp" >Staff</a>
+	<a href="home.jsp" >Homepage</a> 
 </div>
 
 
 
-<h1><i> Nguyen's Palace</i> Hotel!</h1>
+<h1><i> Welcome to Staff Portal!</i></h1>
+<%-- <p><%= session.getAttribute("email")%></p>> --%>
 <img src="hotel.jpg" alt="Flowers in Chania" class="main">
 
 
-	<form action="login" method="post" class="center">
+	<form action="stufflogin" method="post" class="center">
 		<label for="email"><b>Email</b></label>
 		<input type="text" name="email"><br>
 		
@@ -66,7 +65,7 @@ $(document).ready(function() {
 	}%></p>
   
 <div class="container signin">
-    <p>No account?<br>You can <a href="signup.jsp">Sign up</a> right now!</p>
+    <p>No account?<br>You can <a href="stuffsignup.jsp">Sign up</a> right now!</p>
 </div>
 
 </body>

@@ -23,9 +23,8 @@ $(document).ready(function() {
     			
 
     		}else{
-    			$("#links").append("<a href=\"login.jsp\" >Login</a>");
-    			$("#links").append("<a href=\"signup.jsp\" >Sign up</a>");
-
+    			$("#links").append("<a href=\"staf_login.jsp\" >Login</a>");
+    			$("#links").append("<a href=\"staff_signup.jsp\" >Sign up</a>");
     		}
 	    }
     });
@@ -48,26 +47,16 @@ $(document).ready(function() {
 
 
 
+
 <h1><i> Nguyen's Palace</i> Hotel!</h1>
-<img src="hotel.jpg" alt="Flowers in Chania" class="main">
+<h1>A Great Place to Work for All</h1>
 
+<img src="hotel_staff.jpg" alt="Flowers in Chania" class="main">
 
-	<form action="login" method="post" class="center">
-		<label for="email"><b>Email</b></label>
-		<input type="text" name="email"><br>
-		
-		<label for="password"><b>Password</b></label>
-		<input type="password" name="password"><br>
-		<button type="submit" >Log in</button>
-	</form>
+<p class="desc"> Our passion for hospitality is the common thread that has tied our diverse team together around the world for more than 10 years.<br>
+ In our rapidly expanding markets across Central Asia we are committed to creating a great work environment with meaningful opportunities for growth and benefits that help our Team Members all thrive at <i>Nguyen's Palace</i>.  
+<br>Start by <a href="stufflogin.jsp">Logging in</a></p>
 
-	<p><%if (session.getAttribute("email")!= null && session.getAttribute("email").toString().equals("wrong")){
-		out.println("Either username or password is wrong. Try again!");
-	}%></p>
-  
-<div class="container signin">
-    <p>No account?<br>You can <a href="signup.jsp">Sign up</a> right now!</p>
-</div>
 
 </body>
 </html>
