@@ -48,7 +48,7 @@ $(document).ready(function() {
 
 <h1><i> Welcome to Staff Portal!</i></h1>
 <%-- <p><%= session.getAttribute("email")%></p>> --%>
-<img src="hotel.jpg" alt="Flowers in Chania" class="main">
+<img src="hotel_staff.jpg" alt="Flowers in Chania" class="main">
 
 
 	<form action="stufflogin" method="post" class="center">

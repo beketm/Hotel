@@ -38,8 +38,8 @@ public class StuffLogin extends HttpServlet {
 		System.out.println(password);
 		
 		LoginDao dao = new LoginDao();
-		String position = dao.get_stuff(username).get(2);
 		if (dao.checkStuff(username, password)) {
+			String position = dao.get_stuff(username).get(2);
 			HttpSession session = req.getSession();
 			session.setAttribute("email", username);
 			session.setAttribute("position", position);

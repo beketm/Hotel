@@ -232,8 +232,8 @@ public class LoginDao {
 					+ "FROM rooms r "
 					+ "JOIN room_type rt ON r.room_type_id=rt.room_type_id "
 					+ "JOIN booking b  ON b.room_number=r.room_number AND b.hotel_id=r.hotel_id "
-					+ "WHERE r.hotel_id IN (SELECT b.hotel_id FROM booking b WHERE b.email=? AND b.check_out_date=<CURRENT_DATE)"
-					+ "AND r.room_number IN (SELECT b.room_number FROM booking b WHERE b.email=? AND b.check_out_date=<CURRENT_DATE);";
+					+ "WHERE r.hotel_id IN (SELECT b.hotel_id FROM booking b WHERE b.email=? AND b.check_out_date<=CURRENT_DATE)"
+					+ "AND r.room_number IN (SELECT b.room_number FROM booking b WHERE b.email=? AND b.check_out_date<=CURRENT_DATE);";
 
 
 //			System.out.println(sql);
