@@ -415,6 +415,71 @@ public class LoginDao {
         }
         return false;
     }
+    
+    public List<List<String>> get_Stuff(){
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conn = DriverManager.getConnection(url, username, pass);
+            String sql = "SELECT first_name, last_name, position, hotel_id "
+                    + "FROM stuff;";
+
+            PreparedStatement st = conn.prepareStatement(sql);
+
+
+            System.out.println(st);
+            ResultSet rs = st.executeQuery();
+            List<List<String>> ans = new LinkedList<>();
+
+            while (rs.next()) {
+                List<String> temp = new LinkedList<>();
+                for(int i = 1; i <= rs.getMetaData().getColumnCount();i++) {
+                    System.out.println(rs.getMetaData().getColumnCount());
+                    System.out.println(rs.getObject(i).toString());
+                    temp.add(rs.getObject(i).toString());
+                }
+                ans.add(temp);
+            }
+            System.out.println(ans);
+            return ans;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return new LinkedList<>();
+    }
+    
+    public List<List<String>> get_clean_rooms(){
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conn = DriverManager.getConnection(url, username, pass);
+            String sql = "SELECT * FROM clean_room;";
+
+            PreparedStatement st = conn.prepareStatement(sql);
+
+
+            System.out.println(st);
+            ResultSet rs = st.executeQuery();
+            List<List<String>> ans = new LinkedList<>();
+
+            while (rs.next()) {
+                List<String> temp = new LinkedList<>();
+                for(int i = 1; i <= rs.getMetaData().getColumnCount();i++) {
+                    System.out.println(rs.getMetaData().getColumnCount());
+                    System.out.println(rs.getObject(i).toString());
+                    temp.add(rs.getObject(i).toString());
+                }
+                ans.add(temp);
+            }
+            System.out.println(ans);
+            return ans;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return new LinkedList<>();
+    }
 }
 
 

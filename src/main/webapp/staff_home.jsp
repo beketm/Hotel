@@ -18,13 +18,13 @@ $(document).ready(function() {
 	    success: function(data){ 
     		console.log(data);
     		if (data.result){
-    			$("#links").append("<a href=\"profile.jsp\" >My Profile</a>");
+    			$("#links").append("<a href=\"stuffprofile.jsp\" >My Profile</a>");
     			$("#links").append("<a href=\"logout\" >Log out</a>");
     			
 
     		}else{
-    			$("#links").append("<a href=\"staf_login.jsp\" >Login</a>");
-    			$("#links").append("<a href=\"staff_signup.jsp\" >Sign up</a>");
+    			$("#links").append("<a href=\"stufflogin.jsp\" >Login</a>");
+    			$("#links").append("<a href=\"stuffsignup.jsp\" >Sign up</a>");
     		}
 	    }
     });

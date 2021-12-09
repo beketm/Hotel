@@ -116,3 +116,10 @@ td.roomimg {
 	width: 30%;
 }
 
+input[type=checkbox]{
+    width: 1em;
+    font-size: inherit;
+    margin: 0;
+    transform: translateX(-9999px);
+}
+
